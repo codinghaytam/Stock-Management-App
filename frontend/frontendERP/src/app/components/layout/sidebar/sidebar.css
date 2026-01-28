@@ -1,0 +1,21 @@
+:host { display: block; height: 100vh; }
+.sidebar { width: 16rem; height: 100vh; position: sticky; top: 0; background-color: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; }
+.logo-container { padding: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.logo-icon { width: 2.5rem; height: 2.5rem; background-color: #3d7a1b; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.logo-icon .material-symbols-outlined { font-size: 1.5rem; font-weight: 700; }
+.logo-text { display: flex; flex-direction: column; }
+.logo-text h1 { font-size: 1.125rem; font-weight: 700; line-height: 1; letter-spacing: -0.025em; color: #1e293b; margin: 0; }
+.logo-text p { font-size: 10px; color: #3d7a1b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
+.nav-container { flex: 1; padding: 0 1rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 0.375rem; text-decoration: none; color: #475569; transition: background-color 0.15s, color 0.15s; }
+.nav-item:hover { background-color: #f8fafc; }
+.nav-item .material-symbols-outlined { color: #94a3b8; font-style: normal; }
+.nav-label { font-size: 0.875rem; font-weight: 600; }
+.nav-item.active { background-color: #f0fdf4; color: #3d7a1b; border-right: 4px solid #3d7a1b; }
+.nav-item.active .material-symbols-outlined { color: #3d7a1b; }
+.footer-container { padding: 1rem; border-top: 1px solid #e5e7eb; }
+.footer-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; color: #475569; cursor: pointer; transition: color 0.15s; }
+.footer-item:hover { color: #3d7a1b; }
+.footer-icon { width: 2rem; height: 2rem; border-radius: 9999px; background-color: #f1f5f9; display: flex; align-items: center; justify-content: center; }
+.footer-icon .material-symbols-outlined { font-size: 0.875rem; color: #64748b; }
+.footer-label { font-size: 0.875rem; font-weight: 600; }

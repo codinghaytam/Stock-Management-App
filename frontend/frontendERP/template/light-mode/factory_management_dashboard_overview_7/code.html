@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sales Transactions Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3d7a1b","primary-light": "#ecfdf5",
+                        "accent-gold": "#b08d1a",
+                        "surface-bg": "#f9fafb",
+                        "surface-card": "#ffffff",
+                        "border-light": "#e5e7eb",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Manrope', sans-serif;
+            }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: #f0fdf4;
+            color: #3d7a1b;
+            border-right: 4px solid #3d7a1b;
+        }
+    </style>
+</head>
+<body class="bg-surface-bg text-slate-900 min-h-screen flex">
+<aside class="w-64 border-r border-border-light flex flex-col h-screen sticky top-0 bg-white">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-2xl font-bold">oil_barrel</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-none tracking-tight text-slate-800">Olive ERP</h1>
+<p class="text-[10px] text-primary font-bold uppercase tracking-wider">Factory Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md active-nav" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-bold">Sales</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">inventory_2</span>
+<span class="text-sm font-semibold">Stock</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+<span class="text-sm font-semibold">Packaging</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">webhook</span>
+<span class="text-sm font-semibold">Webhooks</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-light">
+<div class="flex items-center gap-3 p-2 text-slate-600 hover:text-primary transition-colors cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500 text-sm">settings</span>
+</div>
+<span class="text-sm font-semibold">System Settings</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<header class="h-16 border-b border-border-light flex items-center justify-between px-8 bg-white sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-extrabold text-slate-800">Sales Management</h2>
+<div class="h-6 w-[1px] bg-border-light hidden md:block"></div>
+<div class="hidden md:flex items-center gap-2 text-slate-600 text-xs font-semibold bg-slate-50 px-3 py-1.5 rounded-lg border border-border-light">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 24, 2023 - Oct 31, 2023</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-slate-50 border border-border-light rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary w-64 outline-none transition-all" placeholder="Search orders, stock..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="size-10 rounded-lg flex items-center justify-center hover:bg-slate-50 border border-border-light text-slate-600">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 border-l border-border-light pl-6">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none text-slate-800">Admin User</p>
+<p class="text-xs text-primary font-bold mt-1 uppercase">Plant Manager</p>
+</div>
+<img alt="Admin" class="size-10 rounded-full border border-border-light object-cover ring-2 ring-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzbyY9JsFdw0FobCNkiUL8_jIzMYtFsmwflpRqGmvDpdR-ChTe8yscYVGd0uHtMeXgiX_sVtE2plhBasaEZpQSP54vvqx5WNqL0VKBTaqzNL3Gdhk5PGVCHFiZe4y8m1tKbcWGzOY00NlZ5N98F6Qt_sAgI5zZv-4Lm6yK4ZlD7wwsnxTNMoiG5E8usnBNR7WjKLVaWY89wnZYYL-fhR-53HeP8MInz5JkMHsFEZdz-PcBSrzan4q082ZLfRwGg-S4siGfUTQWeWjO"/>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white border border-border-light p-6 rounded-xl shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
+<div class="absolute top-0 right-0 p-4 text-slate-100 group-hover:text-primary/10 transition-colors">
+<span class="material-symbols-outlined text-6xl">attach_money</span>
+</div>
+<p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Daily Revenue</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold text-slate-900">324,500 DZD</h3>
+<span class="text-xs font-bold text-primary bg-primary-light px-1.5 py-0.5 rounded">+15.3%</span>
+</div>
+<p class="text-xs text-slate-400 mt-4 font-medium">Compared to yesterday</p>
+</div>
+<div class="bg-white border border-border-light p-6 rounded-xl shadow-sm relative overflow-hidden group hover:border-primary/30 transition-colors">
+<div class="absolute top-0 right-0 p-4 text-slate-100 group-hover:text-primary/10 transition-colors">
+<span class="material-symbols-outlined text-6xl">shopping_basket</span>
+</div>
+<p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Average Order Value</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold text-slate-900">42,800 DZD</h3>
+<span class="text-xs font-bold text-primary bg-primary-light px-1.5 py-0.5 rounded">+4.1%</span>
+</div>
+<p class="text-xs text-slate-400 mt-4 font-medium">Last 30 days rolling average</p>
+</div>
+</div>
+<div class="bg-white border border-border-light rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light flex justify-between items-center">
+<div>
+<h4 class="text-lg font-extrabold text-slate-800">Sales Transactions</h4>
+<p class="text-sm text-slate-500 font-medium">Manage and view all daily transactions</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-white hover:bg-slate-50 rounded-lg text-sm font-bold border border-border-light text-slate-700 shadow-sm transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filter
+</button>
+<button class="px-4 py-2 bg-primary hover:bg-[#326416] text-white rounded-lg text-sm font-bold shadow-sm shadow-primary/20 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+                        New Sale
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50">
+<tr>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500">ID</th>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500">Date</th>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500">Type</th>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500">Vendeur ID</th>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500">Amount</th>
+<th class="px-6 py-4 text-xs font-extrabold uppercase tracking-widest text-slate-500 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light">
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-bold text-sm text-slate-900">#ORD-9024</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">Oct 31, 2023 10:15</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-extrabold border border-primary/20 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-700">#VND-105</td>
+<td class="px-6 py-4 text-sm font-extrabold text-primary">62,500 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-bold text-sm text-slate-900">#ORD-9023</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">Oct 31, 2023 09:42</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md bg-accent-gold/10 text-accent-gold text-[10px] font-extrabold border border-accent-gold/20 uppercase">DU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-700">#VND-302</td>
+<td class="px-6 py-4 text-sm font-extrabold text-primary">18,200 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-bold text-sm text-slate-900">#ORD-9022</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">Oct 30, 2023 16:10</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-extrabold border border-primary/20 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-700">#VND-105</td>
+<td class="px-6 py-4 text-sm font-extrabold text-primary">145,000 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-bold text-sm text-slate-900">#ORD-9021</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">Oct 30, 2023 14:20</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-extrabold border border-primary/20 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-700">#VND-210</td>
+<td class="px-6 py-4 text-sm font-extrabold text-primary">45,000 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-bold text-sm text-slate-900">#ORD-9020</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-medium">Oct 30, 2023 11:45</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md bg-accent-gold/10 text-accent-gold text-[10px] font-extrabold border border-accent-gold/20 uppercase">DU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-700">#VND-401</td>
+<td class="px-6 py-4 text-sm font-extrabold text-primary">12,500 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-slate-50 border-t border-border-light flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
+<span>Showing 1-5 of 1,250 sales</span>
+<div class="flex gap-4">
+<button class="hover:text-primary transition-colors">Previous</button>
+<button class="hover:text-primary transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

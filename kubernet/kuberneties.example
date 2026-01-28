@@ -1,0 +1,150 @@
+# Example Kubernetes configuration for agentInterface
+# Copy this file to 'kuberneties.yaml' and fill in real secrets and values for production use.
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agent-backend-secrets
+type: Opaque
+stringData:
+  SPRING_DATASOURCE_URL: "<your-database-url>"
+  JWT_SECRET: "<your-jwt-secret>"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: frontend-erp-secrets
+type: Opaque
+stringData:
+  API_BASE_URL: "/api"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-backend
+  labels:
+    app: agent-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent-backend
+  template:
+    metadata:
+      labels:
+        app: agent-backend
+    spec:
+      containers:
+      - name: agent-backend
+        image: agent-interface-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: agent-backend-secrets
+              key: SPRING_DATASOURCE_URL
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: agent-backend-secrets
+              key: JWT_SECRET
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: "update"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-backend
+spec:
+  selector:
+    app: agent-backend
+  ports:
+  - port: 8080
+    targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-erp
+  labels:
+    app: frontend-erp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-erp
+  template:
+    metadata:
+      labels:
+        app: frontend-erp
+    spec:
+      containers:
+      - name: frontend-erp
+        image: frontend-erp:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        env:
+        - name: API_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: frontend-erp-secrets
+              key: API_BASE_URL
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-erp
+spec:
+  selector:
+    app: frontend-erp
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: agent-interface-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: agent-backend
+            port:
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-erp
+            port:
+              number: 80

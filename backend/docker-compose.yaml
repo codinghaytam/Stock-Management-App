@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agent_backend
+    environment:
+      # Provide SPRING_DATASOURCE_URL via environment or a .env file (do NOT hard-code secrets here)
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+    ports:
+      - "8080:8080"
+    networks:
+      - agentnet
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: agent_frontend
+    ports:
+      - "4200:4000"
+    networks:
+      - agentnet
+    depends_on:
+      - backend
+
+networks:
+  agentnet:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

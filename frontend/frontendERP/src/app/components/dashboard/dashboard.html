@@ -1,0 +1,187 @@
+<div class="dashboard-container">
+    <div class="stats-grid">
+        <div class="stat-card group">
+            <div class="stat-card-icon">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+            <p class="stat-label">Total Sales (DZD)</p>
+            <div class="stat-value-container">
+                <h3 class="stat-value">{{ (totalSalesValue$ | async) | number:'1.0-0' }}</h3>
+                <span class="stat-badge badge-positive">+12.5%</span>
+            </div>
+            <p class="stat-subtext">Growth vs last month</p>
+        </div>
+
+        <div class="stat-card group">
+            <div class="stat-card-icon">
+                <span class="material-symbols-outlined">inventory</span>
+            </div>
+            <p class="stat-label">Boxes Packaged</p>
+            <div class="stat-value-container">
+                <h3 class="stat-value">{{ (boxesPackaged$ | async) | number }}</h3>
+                <span class="stat-badge badge-positive">+5.2%</span>
+            </div>
+            <p class="stat-subtext">Efficiency up 2.1%</p>
+        </div>
+
+        <div class="stat-card group">
+            <div class="stat-card-icon">
+                <span class="material-symbols-outlined">local_shipping</span>
+            </div>
+            <p class="stat-label">Active Chariots</p>
+            <div class="stat-value-container">
+                <h3 class="stat-value">{{ activeChariots$ | async }}</h3>
+                <span class="stat-badge badge-neutral">Stable</span>
+            </div>
+            <p class="stat-subtext">Current floor logistics</p>
+        </div>
+
+        <div class="stat-card group">
+            <div class="stat-card-icon">
+                <span class="material-symbols-outlined">trending_up</span>
+            </div>
+            <p class="stat-label">Recent Sales Count</p>
+            <div class="stat-value-container">
+                <h3 class="stat-value">{{ recentSalesCount$ | async }}</h3>
+                <span class="stat-badge badge-positive">+8%</span>
+            </div>
+            <p class="stat-subtext">Past 24 hours</p>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card wide">
+            <div class="card-header">
+                <div class="card-title">
+                    <h4>Sales Overview</h4>
+                    <p>Revenue performance by month</p>
+                </div>
+                <button class="action-btn">
+                    VIEW REPORT <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+            </div>
+            <div class="chart-visual">
+                <svg viewBox="0 0 800 240" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#3d7a1b" stop-opacity="0.15"></stop>
+                            <stop offset="100%" stop-color="#3d7a1b" stop-opacity="0"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path d="M0,180 Q100,160 200,100 T400,120 T600,60 T800,40 V240 H0 Z" fill="url(#chartGradient)"></path>
+                    <path d="M0,180 Q100,160 200,100 T400,120 T600,60 T800,40" fill="none" stroke="#3d7a1b" stroke-width="3"></path>
+                    <circle cx="200" cy="100" fill="#3d7a1b" r="5" stroke="white" stroke-width="2"></circle>
+                    <circle cx="400" cy="120" fill="#3d7a1b" r="5" stroke="white" stroke-width="2"></circle>
+                    <circle cx="600" cy="60" fill="#3d7a1b" r="5" stroke="white" stroke-width="2"></circle>
+                </svg>
+                <div class="chart-axis">
+                    <span>Jan</span>
+                    <span>Feb</span>
+                    <span>Mar</span>
+                    <span>Apr</span>
+                    <span>May</span>
+                    <span>Jun</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <h4>Stock Distribution</h4>
+                    <p>Brand market share</p>
+                </div>
+            </div>
+            <ng-container *ngIf="stockDistribution$ | async as distribution">
+                <div class="donut-wrapper">
+                    <div class="donut">
+                        <div class="donut-ring primary" aria-hidden="true"></div>
+                        <div class="donut-ring gold" aria-hidden="true"></div>
+                        <div class="donut-center">
+                            <span>{{ distribution.total ? 100 : 0 }}%</span>
+                            <small>Total Units</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="distribution-list">
+                    <div class="distribution-item">
+                        <div class="distribution-label">
+                            <span class="dot primary"></span>
+                            <span>ZITBLAD</span>
+                        </div>
+                        <strong>{{ distribution.zitbladPct }}%</strong>
+                    </div>
+                    <div class="distribution-item">
+                        <div class="distribution-label">
+                            <span class="dot gold"></span>
+                            <span>ASSELIA</span>
+                        </div>
+                        <strong>{{ distribution.asseliaPct }}%</strong>
+                    </div>
+                    <div class="distribution-item">
+                        <div class="distribution-label">
+                            <span class="dot neutral"></span>
+                            <span>KAULDA</span>
+                        </div>
+                        <strong>{{ distribution.kauldaPct }}%</strong>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="table-header">
+            <div>
+                <h4>Recent Sales</h4>
+                <p>Real-time transaction logs</p>
+            </div>
+            <div class="table-actions">
+                <button class="btn-outline" type="button">Filter</button>
+                <button class="btn-primary" type="button">New Sale</button>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th class="align-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="recentSales$ | async as recentSales">
+                    <tr *ngFor="let sale of recentSales">
+                        <td class="id">{{ sale.id ? ('#' + sale.id) : '—' }}</td>
+                        <td class="date">
+                            <span *ngIf="sale.date; else emptyDate">{{ sale.date | date:'MMM d, y HH:mm' }}</span>
+                            <ng-template #emptyDate>—</ng-template>
+                        </td>
+                        <td>
+                            <span class="badge" [ngClass]="sale.type === 'AU_VENDEUR' ? 'badge-primary' : 'badge-gold'">
+                                {{ sale.type }}
+                            </span>
+                        </td>
+                        <td class="customer">{{ sale.vendeurId ? ('Vendeur ' + sale.vendeurId) : '—' }}</td>
+                        <td class="amount">{{ sale.amount | number:'1.0-0' }} DZD</td>
+                        <td class="align-right">
+                            <button class="icon-action" type="button">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer">
+            <span>Showing 1-4 of 1,250 sales</span>
+            <div class="pager">
+                <button type="button">Previous</button>
+                <button type="button">Next</button>
+            </div>
+        </div>
+    </div>
+</div>

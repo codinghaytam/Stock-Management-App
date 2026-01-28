@@ -1,0 +1,2 @@
+# Ignore Kubernetes config with secrets
+kubernet/kuberneties.yaml

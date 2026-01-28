@@ -1,0 +1,132 @@
+<div class="page-shell">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Industrial</p>
+      <h1>Production des bouteilles</h1>
+      <p class="description">Convertissez le stock brut en produits prêts à l&apos;expédition en contrôlant vos ratios et vos coûts en temps réel.</p>
+      <div class="hero-tags">
+        <span class="chip">
+          <span class="material-symbols-outlined">bolt</span>
+          Traçabilité instantanée
+        </span>
+        <span class="chip">
+          <span class="material-symbols-outlined">shield</span>
+          Contrôles qualité intégrés
+        </span>
+      </div>
+    </div>
+    <div class="hero-stats" *ngIf="rawSnapshot$ | async as raw">
+      <article class="stat-card" *ngFor="let item of raw">
+        <div class="stat-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">inventory_2</span>
+        </div>
+        <header>
+          <p>{{ item.type }}</p>
+          <h2>{{ item.quantity | number }}</h2>
+        </header>
+        <footer>
+          <span class="trend positive">
+            <span class="material-symbols-outlined">trending_up</span>
+            Stable
+          </span>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <article class="card production">
+      <header>
+        <div>
+          <p class="eyebrow">Nouvelle série</p>
+          <h2>Lancer une production</h2>
+        </div>
+        <span class="pill">Temps réel</span>
+      </header>
+
+      <form (ngSubmit)="onSubmit()" #productionForm="ngForm">
+        <fieldset class="alert-stack" *ngIf="successMessage || errorMessage">
+          <div *ngIf="successMessage" class="alert success">
+            <span class="material-symbols-outlined">check_circle</span>
+            <div>
+              <h3>Production enregistrée</h3>
+              <p>{{ successMessage }}</p>
+            </div>
+          </div>
+          <div *ngIf="errorMessage" class="alert error">
+            <span class="material-symbols-outlined">error</span>
+            <div>
+              <h3>Échec de production</h3>
+              <p>{{ errorMessage }}</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-grid">
+          <label class="input-group">
+            <span>Type d&apos;huile</span>
+            <div class="select-wrapper">
+              <select name="type" [(ngModel)]="form.type" required>
+                <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+              </select>
+              <span class="material-symbols-outlined">arrow_drop_down</span>
+            </div>
+          </label>
+
+          <label class="input-group">
+            <span>Litrage</span>
+            <div class="select-wrapper">
+              <select name="litrage" [(ngModel)]="form.litrage" required>
+                <option *ngFor="let l of litrages" [value]="l">{{ l }}L</option>
+              </select>
+              <span class="material-symbols-outlined">arrow_drop_down</span>
+            </div>
+          </label>
+
+          <label class="input-group">
+            <span>Prix unitaire (DZD)</span>
+            <input type="number" name="prix" [(ngModel)]="form.prix" min="0" step="0.5" required>
+          </label>
+        </div>
+
+        <footer class="actions">
+          <button type="submit" [disabled]="!productionForm.form.valid || loading">
+            <span *ngIf="!loading" class="btn-label">
+              <span class="material-symbols-outlined">factory</span>
+              Produire maintenant
+            </span>
+            <span *ngIf="loading" class="spinner"></span>
+          </button>
+          <p class="helper">Le stock brut est automatiquement décrémenté selon la recette sélectionnée.</p>
+        </footer>
+      </form>
+    </article>
+
+    <aside class="card guidance">
+      <header>
+        <h2>Contrôles qualité</h2>
+        <p>Vérifiez vos seuils avant de lancer une série.</p>
+      </header>
+      <ul>
+        <li>
+          <span class="material-symbols-outlined">assignment_turned_in</span>
+          Prévalider la disponibilité des matières premières.
+        </li>
+        <li>
+          <span class="material-symbols-outlined">science</span>
+          Respecter les temps de décantation recommandés.
+        </li>
+        <li>
+          <span class="material-symbols-outlined">inventory</span>
+          Enregistrer les numéros de lots pour assurer la traçabilité.
+        </li>
+      </ul>
+      <footer>
+        <button type="button" class="secondary">
+          <span class="material-symbols-outlined">summarize</span>
+          Voir les procédures
+        </button>
+      </footer>
+    </aside>
+  </section>
+</div>

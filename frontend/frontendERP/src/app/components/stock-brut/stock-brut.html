@@ -1,0 +1,143 @@
+<div class="stock-page">
+    <div class="kpi-grid" *ngIf="kpi$ | async as kpi">
+        <div class="kpi-card">
+            <div class="kpi-icon">
+                <span class="material-symbols-outlined">water_drop</span>
+            </div>
+            <p class="kpi-label">Raw Oil Inventory</p>
+            <div class="kpi-value">
+                <h3>{{ kpi.rawTotal | number:'1.0-0' }} L</h3>
+                <span class="kpi-badge">Optimal</span>
+            </div>
+            <p class="kpi-note">Bulk tanks capacity overview</p>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon">
+                <span class="material-symbols-outlined">liquor</span>
+            </div>
+            <p class="kpi-label">Bottled Stock</p>
+            <div class="kpi-value">
+                <h3>{{ kpi.packaged | number:'1.0-0' }} Units</h3>
+                <span class="kpi-badge warning">-2.1%</span>
+            </div>
+            <p class="kpi-note">Ready for dispatch</p>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-icon">
+                <span class="material-symbols-outlined">category</span>
+            </div>
+            <p class="kpi-label">Packaging Materials</p>
+            <div class="kpi-value">
+                <h3>{{ kpi.packaging | number:'1.0-0' }}</h3>
+                <span class="kpi-badge neutral">Stable</span>
+            </div>
+            <p class="kpi-note">Active chariots on the floor</p>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="table-header">
+            <div>
+                <h4>Detailed Product Inventory</h4>
+                <p>Live tracking of ZITBLAD, ASSELIA, and KAULDA stocks</p>
+            </div>
+            <div class="table-actions">
+                <button type="button" class="btn-outline">
+                    <span class="material-symbols-outlined">filter_list</span>
+                    Filter
+                </button>
+                <button type="button" class="btn-primary" (click)="openBulkModal()">
+                    <span class="material-symbols-outlined">add</span>
+                    Update Bulk Stock
+                </button>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>SKU / ID</th>
+                        <th>Stock Level</th>
+                        <th>Unit Type</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                        <th class="align-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="inventoryRows$ | async as rows">
+                    <tr *ngFor="let row of rows">
+                        <td>
+                            <div class="product">
+                                <div class="badge-icon" [class.gold]="row.type === 'ASSELIA'" [class.neutral]="row.type === 'kAULDA'">
+                                    {{ row.type.slice(0, 2) }}
+                                </div>
+                                <div>
+                                    <p class="product-name">{{ row.name }}</p>
+                                    <p class="product-desc">{{ row.description }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="mono">{{ row.sku }}</td>
+                        <td>
+                            <div class="stock-bar">
+                                <div class="bar">
+                                    <div class="fill" [style.width.%]="row.percent"></div>
+                                </div>
+                                <span class="qty">{{ row.quantity | number:'1.0-0' }}</span>
+                            </div>
+                        </td>
+                        <td class="unit">{{ row.unit }}</td>
+                        <td>
+                            <span class="status" [ngClass]="row.status.className">{{ row.status.label }}</span>
+                        </td>
+                        <td class="muted">{{ (stockState$ | async)?.loading ? '—' : (today | date:'MMM d, y HH:mm') }}</td>
+                        <td class="align-right">
+                            <button class="icon-action" type="button" (click)="openBulkModal(row.type)">
+                                <span class="material-symbols-outlined">edit_square</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer">
+            <span>Showing {{ (inventoryRows$ | async)?.length || 0 }} of {{ types.length }} products</span>
+            <div class="pager">
+                <button type="button">Previous</button>
+                <button type="button">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="showBulkModal">
+        <div class="modal">
+            <header class="modal-header">
+                <div>
+                    <p class="modal-eyebrow">Bulk Stock Update</p>
+                    <h3>Adjust raw stock</h3>
+                    <p>Apply a quantity adjustment for the selected type.</p>
+                </div>
+                <button class="icon-action" type="button" (click)="closeBulkModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </header>
+            <div class="modal-form">
+                <label class="input-group">
+                    <span>Type</span>
+                    <select [(ngModel)]="bulkType" name="bulkType" class="form-field">
+                        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+                    </select>
+                </label>
+                <label class="input-group">
+                    <span>Quantity</span>
+                    <input type="number" min="1" [(ngModel)]="bulkQuantity" name="bulkQuantity" />
+                </label>
+                <div class="modal-actions">
+                    <button type="button" class="btn-outline" (click)="applyBulkDecrease()">Decrease</button>
+                    <button type="button" class="btn-primary" (click)="applyBulkIncrease()">Increase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

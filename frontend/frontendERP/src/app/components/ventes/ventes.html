@@ -1,0 +1,198 @@
+<div class="sales-page">
+  <div class="tabs-bar">
+    <div class="tabs">
+      <button type="button" [class.active]="activeTab === 'AU_VENDEUR'" (click)="setTab('AU_VENDEUR')">Au vendeur</button>
+      <button type="button" [class.active]="activeTab === 'DU_VENDEUR'" (click)="setTab('DU_VENDEUR')">Du vendeur</button>
+    </div>
+    <button type="button" class="btn-primary" (click)="toggleCreate()">
+      <span class="material-symbols-outlined">add</span>
+      Nouvelle vente
+    </button>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">attach_money</span>
+      </div>
+      <p class="kpi-label">Daily Revenue</p>
+      <div class="kpi-value">
+        <h3>{{ totalRevenue | number:'1.0-0' }} DZD</h3>
+        <span class="kpi-badge">+15.3%</span>
+      </div>
+      <p class="kpi-note">Compared to yesterday</p>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">shopping_basket</span>
+      </div>
+      <p class="kpi-label">Average Order Value</p>
+      <div class="kpi-value">
+        <h3>{{ averageTicket | number:'1.0-0' }} DZD</h3>
+        <span class="kpi-badge">+4.1%</span>
+      </div>
+      <p class="kpi-note">Last 30 days rolling average</p>
+    </div>
+  </div>
+
+  <div *ngIf="feedbackMessage" class="alert" [class.success]="feedbackType === 'success'" [class.error]="feedbackType === 'error'">
+    <span class="material-symbols-outlined" *ngIf="feedbackType === 'success'">check_circle</span>
+    <span class="material-symbols-outlined" *ngIf="feedbackType === 'error'">error</span>
+    <p>{{ feedbackMessage }}</p>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <div>
+        <h4>Sales Transactions</h4>
+        <p>Manage and view all daily transactions</p>
+      </div>
+      <div class="table-actions">
+        <button type="button" class="btn-outline">
+          <span class="material-symbols-outlined">filter_list</span>
+          Filter
+        </button>
+        <button type="button" class="btn-primary" (click)="toggleCreate()">
+          <span class="material-symbols-outlined">add</span>
+          New Sale
+        </button>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Vendeur ID</th>
+            <th>Amount</th>
+            <th class="align-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vente of ventes">
+            <td class="id">{{ vente.id ? ('#' + vente.id) : '—' }}</td>
+            <td class="date">{{ vente.dateVente | date:'MMM d, y HH:mm' }}</td>
+            <td>
+              <span class="badge" [class.badge-primary]="activeTab === 'AU_VENDEUR'" [class.badge-gold]="activeTab === 'DU_VENDEUR'">
+                {{ activeTab }}
+              </span>
+            </td>
+            <td class="customer">{{ vente.vendeurId ? ('#' + vente.vendeurId) : '—' }}</td>
+            <td class="amount">{{ vente.montantTotal | number:'1.0-0' }} DZD</td>
+            <td class="align-right">
+              <button class="icon-action" type="button">
+                <span class="material-symbols-outlined">more_vert</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!ventes.length && !loading">
+            <td colspan="6" class="empty">Aucune vente pour cette période.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span>Showing 1-{{ ventes.length || 0 }} of {{ venteCount }} sales</span>
+      <div class="pager">
+        <button type="button">Previous</button>
+        <button type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showCreate">
+    <div class="modal">
+      <header class="modal-header">
+        <div>
+          <p class="modal-eyebrow">New Sale</p>
+          <h3>{{ tabLabel }}</h3>
+          <p>Complete the lines and save to sync with the back-office.</p>
+        </div>
+        <button class="icon-action" type="button" (click)="toggleCreate()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <form (ngSubmit)="submitSale()" class="modal-form">
+        <label class="input-group">
+          <span>Identifiant vendeur</span>
+          <input type="email" [(ngModel)]="newSale.vendeurId" name="vendeurId" placeholder="vendeur@exemple.com" required>
+        </label>
+
+        <section class="form-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Sous-total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let line of newSale.lignes; let i = index">
+                <td>{{ line.typeLigne }}</td>
+                <td>{{ line.produitId }}</td>
+                <td>{{ line.quantite }}</td>
+                <td>{{ line.prixUnitaire | number:'1.0-0' }} DZD</td>
+                <td>{{ line.quantite * line.prixUnitaire | number:'1.0-0' }} DZD</td>
+                <td>
+                  <button type="button" class="icon-action" (click)="removeLine(i)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="input-row">
+                <td>
+                  <select [(ngModel)]="newLine.typeLigne" name="typeLigne" class="form-field">
+                    <option value="BOUTEILLE">Bouteille</option>
+                    <option value="BOITE">Boîte</option>
+                  </select>
+                </td>
+                <td>
+                  <select [(ngModel)]="newLine.produitId" name="produitId" class="form-field">
+                    <ng-container *ngFor="let option of productOptions">
+                      <option *ngIf="option.type === newLine.typeLigne" [value]="option.id">{{ option.label }}</option>
+                    </ng-container>
+                  </select>
+                </td>
+                <td><input type="number" [(ngModel)]="newLine.quantite" name="quantite" min="1" class="form-field"></td>
+                <td><input type="number" [(ngModel)]="newLine.prixUnitaire" name="prixUnitaire" min="0" class="form-field"></td>
+                <td>-</td>
+                <td>
+                  <button type="button" class="icon-action" (click)="addLine()">
+                    <span class="material-symbols-outlined">add_circle</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">Total</td>
+                <td>{{ totalAmount | number:'1.0-0' }} DZD</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </section>
+
+        <p class="form-error" *ngIf="formError">{{ formError }}</p>
+
+        <footer class="modal-actions">
+          <button type="submit" [disabled]="loading" class="btn-primary">
+            <span *ngIf="!loading" class="btn-label">
+              <span class="material-symbols-outlined">file_download_done</span>
+              Enregistrer la vente
+            </span>
+            <span *ngIf="loading" class="spinner"></span>
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>
+

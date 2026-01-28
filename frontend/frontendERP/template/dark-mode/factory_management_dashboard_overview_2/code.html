@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Factory Management Dashboard Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#49e619",
+                        "accent-gold": "#d4af37",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#152111",
+                        "card-dark": "#1c2e17",
+                        "border-dark": "#2c4724",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: #2c4724;
+            border-left: 4px solid #49e619;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-border-dark flex flex-col h-screen sticky top-0 bg-background-light dark:bg-background-dark">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined text-3xl font-bold">oil_barrel</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-none tracking-tight">Olive ERP</h1>
+<p class="text-xs text-primary font-medium">Factory Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg active-nav text-white" href="#">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-border-dark/30 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">receipt_long</span>
+<span class="text-sm font-medium">Sales</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-border-dark/30 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">inventory_2</span>
+<span class="text-sm font-medium">Stock</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-border-dark/30 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+<span class="text-sm font-medium">Packaging</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-border-dark/30 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">webhook</span>
+<span class="text-sm font-medium">Webhooks</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-dark">
+<div class="flex items-center gap-3 p-2">
+<div class="size-8 rounded-full bg-accent-gold/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-gold text-sm">settings</span>
+</div>
+<span class="text-sm font-medium">System Settings</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- TopNavBar -->
+<header class="h-16 border-b border-border-dark flex items-center justify-between px-8 bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold">Dashboard Overview</h2>
+<div class="h-6 w-[1px] bg-border-dark hidden md:block"></div>
+<div class="hidden md:flex items-center gap-2 text-slate-500 text-sm bg-border-dark/20 px-3 py-1.5 rounded-lg border border-border-dark">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 24, 2023 - Oct 31, 2023</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-border-dark/30 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64" placeholder="Search orders, stock..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="size-10 rounded-lg flex items-center justify-center hover:bg-border-dark/40 border border-border-dark">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 border-l border-border-dark pl-6">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none">Admin User</p>
+<p class="text-xs text-primary font-medium mt-1">Plant Manager</p>
+</div>
+<img class="size-10 rounded-full border-2 border-primary object-cover" data-alt="Profile picture of the plant manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzbyY9JsFdw0FobCNkiUL8_jIzMYtFsmwflpRqGmvDpdR-ChTe8yscYVGd0uHtMeXgiX_sVtE2plhBasaEZpQSP54vvqx5WNqL0VKBTaqzNL3Gdhk5PGVCHFiZe4y8m1tKbcWGzOY00NlZ5N98F6Qt_sAgI5zZv-4Lm6yK4ZlD7wwsnxTNMoiG5E8usnBNR7WjKLVaWY89wnZYYL-fhR-53HeP8MInz5JkMHsFEZdz-PcBSrzan4q082ZLfRwGg-S4siGfUTQWeWjO"/>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-card-dark border border-border-dark p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">payments</span>
+</div>
+<p class="text-slate-400 text-sm font-medium uppercase tracking-wider">Total Sales (DZD)</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold">1,250,000</h3>
+<span class="text-xs font-bold text-primary">+12.5%</span>
+</div>
+<p class="text-xs text-slate-500 mt-4">Growth vs last month</p>
+</div>
+<div class="bg-card-dark border border-border-dark p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">inventory</span>
+</div>
+<p class="text-slate-400 text-sm font-medium uppercase tracking-wider">Boxes Packaged</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold">4,820</h3>
+<span class="text-xs font-bold text-primary">+5.2%</span>
+</div>
+<p class="text-xs text-slate-500 mt-4">Efficiency up 2.1%</p>
+</div>
+<div class="bg-card-dark border border-border-dark p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">local_shipping</span>
+</div>
+<p class="text-slate-400 text-sm font-medium uppercase tracking-wider">Active Chariots</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold">12</h3>
+<span class="text-xs font-bold text-slate-400">Stable</span>
+</div>
+<p class="text-xs text-slate-500 mt-4">Current floor logistics</p>
+</div>
+<div class="bg-card-dark border border-border-dark p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">trending_up</span>
+</div>
+<p class="text-slate-400 text-sm font-medium uppercase tracking-wider">Recent Sales Count</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h3 class="text-2xl font-extrabold">45</h3>
+<span class="text-xs font-bold text-primary">+8%</span>
+</div>
+<p class="text-xs text-slate-500 mt-4">Past 24 hours</p>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Sales Overview Chart -->
+<div class="lg:col-span-2 bg-card-dark border border-border-dark rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h4 class="text-lg font-bold">Sales Overview</h4>
+<p class="text-sm text-slate-400">Revenue performance by month</p>
+</div>
+<button class="text-primary text-xs font-bold flex items-center gap-1 bg-primary/10 px-3 py-1.5 rounded-lg border border-primary/20">
+                            VIEW REPORT <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="h-[240px] w-full relative">
+<svg class="w-full h-full" viewbox="0 0 800 240">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#49e619" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#49e619" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,180 Q100,160 200,100 T400,120 T600,60 T800,40 V240 H0 Z" fill="url(#chartGradient)"></path>
+<path d="M0,180 Q100,160 200,100 T400,120 T600,60 T800,40" fill="none" stroke="#49e619" stroke-width="3"></path>
+<!-- Grid dots -->
+<circle cx="200" cy="100" fill="#49e619" r="4"></circle>
+<circle cx="400" cy="120" fill="#49e619" r="4"></circle>
+<circle cx="600" cy="60" fill="#49e619" r="4"></circle>
+</svg>
+<div class="flex justify-between mt-4 px-2">
+<span class="text-xs text-slate-500 font-bold uppercase">Jan</span>
+<span class="text-xs text-slate-500 font-bold uppercase">Feb</span>
+<span class="text-xs text-slate-500 font-bold uppercase">Mar</span>
+<span class="text-xs text-slate-500 font-bold uppercase">Apr</span>
+<span class="text-xs text-slate-500 font-bold uppercase">May</span>
+<span class="text-xs text-slate-500 font-bold uppercase">Jun</span>
+</div>
+</div>
+</div>
+<!-- Stock Distribution Chart -->
+<div class="bg-card-dark border border-border-dark rounded-xl p-6">
+<h4 class="text-lg font-bold">Stock Distribution</h4>
+<p class="text-sm text-slate-400 mb-8">Brand market share</p>
+<div class="flex justify-center mb-8">
+<div class="relative size-40">
+<!-- CSS-only simple pie representation -->
+<div class="absolute inset-0 rounded-full border-[16px] border-primary" style="clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 60%);"></div>
+<div class="absolute inset-0 rounded-full border-[16px] border-accent-gold opacity-50" style="clip-path: polygon(50% 50%, 0 60%, 0 0, 50% 0);"></div>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="text-2xl font-bold">100%</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Total Stock</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">ZITBLAD</span>
+</div>
+<span class="text-sm font-bold">65%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-accent-gold"></div>
+<span class="text-sm font-medium">ASSELIA</span>
+</div>
+<span class="text-sm font-bold">25%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-slate-600"></div>
+<span class="text-sm font-medium">KAULDA</span>
+</div>
+<span class="text-sm font-bold">10%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Sales Table -->
+<div class="bg-card-dark border border-border-dark rounded-xl overflow-hidden">
+<div class="p-6 border-b border-border-dark flex justify-between items-center">
+<div>
+<h4 class="text-lg font-bold">Recent Sales</h4>
+<p class="text-sm text-slate-400">Real-time transaction logs</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-border-dark/30 hover:bg-border-dark/50 rounded-lg text-sm font-medium border border-border-dark">Filter</button>
+<button class="px-4 py-2 bg-primary text-background-dark rounded-lg text-sm font-bold">New Sale</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-border-dark/10">
+<tr>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Sale ID</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Date</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Type</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Customer</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400">Amount</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<tr class="hover:bg-border-dark/10 transition-colors">
+<td class="px-6 py-4 font-bold text-sm">#ORD-9021</td>
+<td class="px-6 py-4 text-sm text-slate-300">Oct 30, 2023 14:20</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/30 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Distributeur Nord DZ</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">45,000 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-white">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-border-dark/10 transition-colors">
+<td class="px-6 py-4 font-bold text-sm">#ORD-9020</td>
+<td class="px-6 py-4 text-sm text-slate-300">Oct 30, 2023 11:45</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-accent-gold/20 text-accent-gold text-[10px] font-bold border border-accent-gold/30 uppercase">DU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Retailer Center Oran</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">12,500 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-white">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-border-dark/10 transition-colors">
+<td class="px-6 py-4 font-bold text-sm">#ORD-9019</td>
+<td class="px-6 py-4 text-sm text-slate-300">Oct 29, 2023 16:30</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/30 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Gros Export West</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">89,200 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-white">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-border-dark/10 transition-colors">
+<td class="px-6 py-4 font-bold text-sm">#ORD-9018</td>
+<td class="px-6 py-4 text-sm text-slate-300">Oct 29, 2023 09:15</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/30 uppercase">AU_VENDEUR</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Béjaïa Distribution</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">54,000 DZD</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-white">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-border-dark/10 border-t border-border-dark flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-widest">
+<span>Showing 1-4 of 1,250 sales</span>
+<div class="flex gap-4">
+<button class="hover:text-white transition-colors">Previous</button>
+<button class="hover:text-white transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

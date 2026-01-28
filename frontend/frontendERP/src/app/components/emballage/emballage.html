@@ -1,0 +1,116 @@
+<div class="packaging-page">
+  <div class="kpi-grid" *ngIf="kpi$ | async as kpi">
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">shopping_cart</span>
+      </div>
+      <p class="kpi-label">Total Chariots</p>
+      <div class="kpi-value">
+        <h3>{{ kpi.totalChariots | number:'1.0-0' }}</h3>
+        <span class="kpi-badge">Active Floor</span>
+      </div>
+      <p class="kpi-note">100% Fleet Utilization</p>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">inventory_2</span>
+      </div>
+      <p class="kpi-label">Boxes Emballées Today</p>
+      <div class="kpi-value">
+        <h3>{{ kpi.totalBoxes | number:'1.0-0' }}</h3>
+        <span class="kpi-badge gold">Target: 2,000</span>
+      </div>
+      <p class="kpi-note">92.5% of daily goal reached</p>
+    </div>
+  </div>
+
+  <div *ngIf="feedback as fb" class="alert" [class.success]="fb.type === 'success'" [class.error]="fb.type === 'error'">
+    <span class="material-symbols-outlined" *ngIf="fb.type === 'success'">check_circle</span>
+    <span class="material-symbols-outlined" *ngIf="fb.type === 'error'">error</span>
+    <p>{{ fb.message }}</p>
+  </div>
+
+  <div class="section-header">
+    <div>
+      <h3>Active Chariots Overview</h3>
+      <p>Real-time tracking of packaging units on the floor</p>
+    </div>
+    <button class="btn-primary" type="button" (click)="createChariot()" [disabled]="actionLoading">
+      <span class="material-symbols-outlined">add</span>
+      Add New Chariot
+    </button>
+  </div>
+
+  <div class="chariot-grid" *ngIf="chariots$ | async as chariots">
+    <div *ngIf="(loading$ | async) || actionLoading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <article class="chariot-card" *ngFor="let chariot of chariots" (click)="openChariot(chariot)" [attr.data-id]="chariot.id">
+      <div class="card-top">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">shopping_cart</span>
+        </div>
+        <span class="status" [ngClass]="getCard(chariot).statusClass">{{ getCard(chariot).status }}</span>
+      </div>
+      <p class="card-label">Chariot ID</p>
+      <h4 class="card-id">#CHR-{{ chariot.id }}</h4>
+      <div class="card-footer">
+        <div>
+          <span class="footer-label">Load Count</span>
+          <div class="footer-value">{{ chariot.boites?.length || 0 }} <span>boxes</span></div>
+        </div>
+        <span class="material-symbols-outlined arrow">arrow_forward</span>
+      </div>
+    </article>
+
+    <div *ngIf="!chariots.length" class="empty-board">
+      <span class="material-symbols-outlined">inventory</span>
+      <h3>Aucun chariot pour le moment</h3>
+      <p>Créez un chariot pour commencer à suivre la préparation des commandes.</p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="selectedChariot as chariot">
+    <div class="modal">
+      <header class="modal-header">
+        <div>
+          <p class="modal-eyebrow">Chariot #{{ chariot.id }}</p>
+          <h3>Manage chariot load</h3>
+          <p>Ajoutez ou retirez des boîtes, ou supprimez le chariot.</p>
+        </div>
+        <button class="icon-action" type="button" (click)="closeChariot()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="box-list" *ngIf="chariot.boites?.length; else emptyBoxes">
+          <div class="box-row" *ngFor="let boite of chariot.boites">
+            <div>
+              <strong>#{{ boite.id }}</strong>
+              <span>{{ boite.type }}</span>
+            </div>
+            <button type="button" class="icon-action" (click)="removeBoxFromChariot(chariot.id!, boite.id!)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+        <ng-template #emptyBoxes>
+          <div class="empty">Aucune boîte associée</div>
+        </ng-template>
+
+        <div class="inline-form">
+          <input type="number" [(ngModel)]="boxIdInput" placeholder="ID boîte" min="0">
+          <button type="button" class="btn-primary" (click)="addBoxToChariot(chariot.id!)">Ajouter</button>
+          <button type="button" class="btn-outline" (click)="closeChariot()">Annuler</button>
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="btn-danger" (click)="deleteChariot(chariot.id!)">Supprimer le chariot</button>
+      </footer>
+    </div>
+  </div>
+</div>
+

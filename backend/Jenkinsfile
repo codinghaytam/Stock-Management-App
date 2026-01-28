@@ -1,0 +1,28 @@
+pipeline{
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                docker build -t haytamd44/frontend-crm-jit ./frontend
+                docker build -t haytamd44/backend-crm-jit .
+                docker image ls
+                docker push haytamd44/frontend-crm-jit
+                docker push haytamd44/backend-crm-jit
+
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Add your test commands here
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+
+            }
+        }
+    }
+}

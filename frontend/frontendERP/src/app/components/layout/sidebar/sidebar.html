@@ -1,0 +1,53 @@
+<aside class="sidebar">
+  <div class="logo-container">
+    <div class="logo-icon">
+      <span class="material-symbols-outlined icon-lg">oil_barrel</span>
+    </div>
+    <div class="logo-text">
+      <h1>Olive ERP</h1>
+      <p>Factory Management</p>
+    </div>
+  </div>
+
+  <nav class="nav-container">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <a routerLink="/dashboard/ventes" routerLinkActive="active" class="nav-item">
+      <span class="material-symbols-outlined">receipt_long</span>
+      <span class="nav-label">Sales</span>
+    </a>
+
+    <!-- Stock Section -->
+    <a routerLink="/dashboard/stock-brut" routerLinkActive="active" class="nav-item">
+      <span class="material-symbols-outlined">inventory_2</span>
+      <span class="nav-label">Stock</span>
+    </a>
+
+    <a routerLink="/dashboard/industrial" routerLinkActive="active" class="nav-item">
+      <span class="material-symbols-outlined">factory</span>
+      <span class="nav-label">Industrial</span>
+    </a>
+
+    <a routerLink="/dashboard/commercial" routerLinkActive="active" class="nav-item">
+      <span class="material-symbols-outlined">storefront</span>
+      <span class="nav-label">Commercial</span>
+    </a>
+
+    <a routerLink="/dashboard/emballage" routerLinkActive="active" class="nav-item">
+      <span class="material-symbols-outlined">package_2</span>
+      <span class="nav-label">Packaging</span>
+    </a>
+  </nav>
+
+  <div class="footer-container">
+    <div class="footer-item">
+      <div class="footer-icon">
+        <span class="material-symbols-outlined icon-sm">settings</span>
+      </div>
+      <span class="footer-label">System Settings</span>
+    </div>
+  </div>
+</aside>

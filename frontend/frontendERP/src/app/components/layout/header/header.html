@@ -1,0 +1,38 @@
+<header class="app-header">
+	<div class="header-left">
+		<h2 class="page-title">{{ (currentSection$ | async) || 'Dashboard Overview' }}</h2>
+		<div class="divider" aria-hidden="true"></div>
+		<div class="date-chip">
+			<span class="material-symbols-outlined">calendar_today</span>
+			<span>Oct 24, 2023 - Oct 31, 2023</span>
+		</div>
+	</div>
+
+	<div class="header-right">
+		<div class="search-box" role="search">
+			<span class="material-symbols-outlined">search</span>
+			<input type="search" placeholder="Search orders, stock..." aria-label="Search" />
+		</div>
+
+		<button class="icon-button" type="button" aria-label="Notifications">
+			<span class="material-symbols-outlined">notifications</span>
+		</button>
+
+		<div class="profile" *ngIf="user$ | async as user; else guestBlock">
+			<div class="profile-text">
+				<p class="profile-name">Admin User</p>
+				<p class="profile-role">{{ getPrimaryRole(user) }}</p>
+			</div>
+			<div class="profile-avatar" aria-hidden="true">{{ getInitials(user) }}</div>
+		</div>
+		<ng-template #guestBlock>
+			<div class="profile">
+				<div class="profile-text">
+					<p class="profile-name">Guest User</p>
+					<p class="profile-role">Not connected</p>
+				</div>
+				<div class="profile-avatar" aria-hidden="true">?</div>
+			</div>
+		</ng-template>
+	</div>
+</header>
